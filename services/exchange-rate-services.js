@@ -18,6 +18,8 @@ const exchangeRateTable = {
   }
 }
 
+const exchangeRateArr = Object.keys(exchangeRateTable.currencies)
+
 const exchangeRateServices = {
   exchangeRate: async (req, callback) => {
     try {
@@ -26,7 +28,11 @@ const exchangeRateServices = {
       // 移除 '$' 和 ',' 再轉換為數字
       amount = Number(amount.slice(1).replace(/[,]+/g, ''))
 
-      const currentRate = exchangeRateTable['currencies'][source][target]
+      if (!exchangeRateArr.some(ER => ER === source) && !exchangeRateArr.some(ER => ER === target)) throw new Error("The query of source and target can't be used")
+      if (!exchangeRateArr.some(ER => ER === source)) throw new Error("The query of source can't be used")
+      if (!exchangeRateArr.some(ER => ER === target)) throw new Error("The query of target can't be used")
+
+      const currentRate = exchangeRateTable.currencies[source][target]
       let convertedAmount = amount * currentRate
       // 四捨五入到小數點第二位
       convertedAmount = Math.round(convertedAmount * 100) / 100
