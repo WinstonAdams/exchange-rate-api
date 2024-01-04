@@ -26,9 +26,7 @@ const exchangeRateServices = {
       // 移除 '$' 和 ',' 再轉換為數字
       amount = Number(amount.slice(1).replace(/[,]+/g, ''))
 
-      if (source === 'KKK') throw new Error('KKK is not used')
-
-      const currentRate = exchangeRateTable.currencies[source][target]
+      const currentRate = exchangeRateTable['currencies'][source][target]
       let convertedAmount = amount * currentRate
       // 四捨五入到小數點第二位
       convertedAmount = Math.round(convertedAmount * 100) / 100
